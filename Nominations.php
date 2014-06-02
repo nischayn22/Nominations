@@ -67,7 +67,7 @@ function NominateAndNotify($parser) {
 		'name' => 'nominateAndNotify',
 	     	'class' => '',
 	     	'action' => "{$wgScriptPath}/api.php",
-	     	'method' => 'get'
+		'method' => 'post'
 	     )
     );
 

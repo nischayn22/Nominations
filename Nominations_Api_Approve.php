@@ -15,16 +15,24 @@ class ApiApprove extends ApiBase {
 
         $approve_action = $this->getMain()->getVal('approveaction');
 
-	$title = Title::newFromText( $this->getMain()->getVal('create_title') );
-	$article = new Article( $title );
-	$article->doEdit( $this->getMain()->getVal('create_text'), "Page created by admin because nomination decision is $approve_action" );
+	if ($this->getMain()->getVal('create_title') != '' && $this->getMain()->getVal('create_text') != '' ) {
+	   $title = Title::newFromText( $this->getMain()->getVal('create_title') );
+	   $article = new Article( $title );
+	   $article->doEdit( $this->getMain()->getVal('create_text'), "Page created by admin because nomination decision is $approve_action" );
+	}
 
 	$oldTitle = Title::newFromText($pageName);
 	$pageObj = WikiPage::factory( $oldTitle );
 	$pageObj->doDeleteArticleReal( $approve_action, false, 0, true );
 
 	$this->sendMails();
-	header("Location: " . $wgScript . '/' . $this->getMain()->getVal('create_title') );
+
+	if ($this->getMain()->getVal('create_title') != '') {
+	   header("Location: " . $wgScript . '/' . $this->getMain()->getVal('create_title') );
+	} else {
+	   header("Location: " . $wgScript . '/' . $pageName );
+	}
+
     	die();
     }
 
